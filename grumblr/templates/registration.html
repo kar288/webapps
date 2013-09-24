@@ -1,0 +1,20 @@
+{% extends "base-out.html" %}
+
+{% block title %}Grumblr{% endblock %}
+
+{% block content %}
+
+	<form action="registration.html" method="POST" class="form-signin">
+		<h2> Register </h2>
+		{% for value in values.values %}
+			{% if value.mandatory %}
+				<input name="{{value.name}}" type="{{value.type}}" class="form-control {% if value.errors %}wrong{%endif%}" placeholder="{{value.placeholder}}" {% if value.errors %} data-toggle="popover" data-placement="right" data-content= "{{value.errors}}"{%endif%} {%if value.name == "email" %} autofocus {%endif%}>
+			{% endif %}
+		{% endfor %}
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+		<div>
+			<a href="/recover-password.html"> Forgot your password? </a>
+		</div>
+		{% csrf_token %}
+	</form>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base-in.html" %}
+{% block left-content %}
+	<form method="POST" action="edit-information.html" class="edit-username">
+		<div class="input-group">
+			<input name="username" type="text" class="form-control user-name" value="{{user}}" data-toggle="popover" data-placement="right" data-content= "Click here to edit me!">
+		</div>
+		{% csrf_token %}
+	</form>
+
+	<form method="POST" action="edit-information.html" class="edit-info">
+		<div class="input-group">
+			<a href="#" class="thumbnail">
+				<img src="{{pic}}" data-src="holder.js/100%x180" alt="...">
+				<input name="pic" type="file" title="Edit">
+			</a>
+		</div>
+		{% csrf_token %}
+	</form>				
+	<form method="POST" action="edit-information.html" class="edit-info">
+		<div class="input-group">			
+			<input name="email" type="text" class="form-control user-data" value="{{user.email}}">
+		</div>
+		{% csrf_token %}
+	</form>	
+{% endblock %}
+{% block middle-content %}
+	{% for error in errors %}
+	<p>
+		{{error}}
+	</p>
+	{% endfor %}
+	{% if success %}
+	<div class="success">
+		{{success}}
+	</div>
+	{% endif %}
+
+	<form method="POST" action="edit-information.html"class="form-signin">
+		{% for key, value in values.items %}
+			{{key}}
+			<input name="{{key}}" type="text" class="form-control" placeholder="{{key}}" {% if value %} value="{{value}}" {% endif%} >
+		{% endfor %}
+		{% csrf_token %}
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
+		<div>
+			<a href="/edit-password.html"> Change Password </a>
+		</div>
+	</form>
+{% endblock %}
+{% block right-content %}
+{% include "follow.html" %}
+{% endblock %}

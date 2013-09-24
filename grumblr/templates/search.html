@@ -1,0 +1,29 @@
+{% extends "base-in.html" %}
+{% block left-content %}
+	<div class="input-group">
+		<h4> {{user.username}} </h4>
+		<a href="profile.html" class="thumbnail">
+			<img src="/static/res/profile-pic.jpg" data-src="holder.js/100%x180" alt="...">
+		</a>
+	</div> <!-- user info -->
+{% endblock %}
+{% block middle-content %}
+	<h4>Search: {{term}}</h4>
+	{% for grumble in grumbls %}
+	<div class="row post">
+		<div class="col-md-2">
+			<a href="#" class="thumbnail">
+				<div class="ratio" style="background-image:url('{{pic}}')">
+				</div>
+			</a>
+		</div>
+		<div class="col-md-10 post-content">
+			<div> <a href="/profile.html/{{user}}"> {{grumble.user}} </a> </div>
+			<h5> {{grumble.content}} </h5>
+			<div class="post-bottom">
+				{{grumble.time}} - <a> Comment </a>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+{% endblock %}

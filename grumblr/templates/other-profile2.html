@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Grumblr</title>
+		<!-- Bootstrap core CSS -->
+		<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/static/css/grumblr.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="stream.html">Grumblr</a>
+				</div>
+				<div class="navbar-collapse collapse" style="height: 1px;">
+					<ul class="nav navbar-nav navbar-left">
+						<li >
+							<a href="profile.html">Profile</a>
+						</li>
+						<li >
+							<a href="stream.html">Stream</a>
+						</li>
+					</ul><!--navbar-left -->
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<form action="search.html" method="get" class="navbar-form">
+								<div class="form-group">
+									<input type="text" placeholder="Search" class="form-control" name="term">
+								</div>
+								<button type="submit" class="btn btn-success search">Search</button>
+							</form>
+						</li>
+						<li class="navbar-thumbnail">
+							<a href="profile.html" class="thumbnail">
+								<img class="ratio" style="background-image:url('/static/res/profile-pic.jpg')">
+							</a>
+						</li>
+						<li>
+							<a href="sign-in.html">Logout</a>
+						</li>
+					</ul><!--navbar right -->
+				</div>
+			</div><!-- /.container -->
+		</div><!-- /.navbar -->
+		<div class="container stream">
+			<div class="row">
+				<div class="col-lg-3 user-info">
+					<div class="input-group">
+						<h4> Charlie </h4>
+						<a href="other-profile.html" class="thumbnail">
+							<img src="http://www.cs.cmu.edu/~charlie/charlie_garrod_august_2008.jpg" data-src="holder.js/100%x180" alt="...">
+						</a>
+						<h5> charlie@cs.cmu.edu </h5>
+						<a class="follow btn btn-sm btn-primary btn-block" type="submit" href="#">Follow </a>
+					</div> <!-- user info -->
+				</div> <!-- left column -->
+				<div class="col-lg-7 posts">
+					<h4>Someone's grumbls</h4>
+					<div class="row post">
+						<div class="col-md-2">
+							<a href="other-profile.html" class="thumbnail">
+								<div class="ratio" style="background-image:url('https://sphotos-b.xx.fbcdn.net/hphotos-prn1/1013962_10152902610830307_623871566_n.jpg')">
+								</div>
+							</a>
+						</div>
+						<div class="col-md-8 post-content">
+							<div> <a href="other-profile.html"> Someone </a> </div>
+							<h5> I had something very interesting to say here </h5>
+							<div class="post-bottom">
+								Aug 31, 2013
+							</div>
+						</div>
+						<div class="col-md-2">
+							<a href="#" class="thumbnail">
+								<div class="ratio" style="background-image:url('https://sphotos-b.xx.fbcdn.net/hphotos-frc3/971678_10152993635555307_1478960730_n.jpg')">
+								</div>
+							</a>
+						</div>
+
+						<div class="row answer">
+							<div class="col-md-10 col-md-offset-2">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="Comment">
+									<span class="input-group-addon">
+										<input type="file" title="pic">
+										<span class="glyphicon glyphicon-camera">
+										</span>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row post comment">
+						<div class="col-md-2 col-md-offset-2">
+							<a href="other-profile2.html" class="thumbnail">
+								<div class="ratio" style="background-image:url('http://www.cs.cmu.edu/~charlie/charlie_garrod_august_2008.jpg')">
+								</div>
+							</a>
+						</div>
+						<div class="col-md-6 post-content">
+							<div> 
+								<a href="other-profile2.html"> Charlie </a> 
+								<span> I had something very interesting to say here </span>
+							</div>
+							<div class="post-bottom">
+								Aug 31, 2013
+							</div>
+						</div>
+						<div class="col-md-2">
+							<a href="other-profile.html" class="thumbnail">
+								<div class="ratio" style="background-image:url('https://sphotos-b.xx.fbcdn.net/hphotos-frc3/971678_10152993635555307_1478960730_n.jpg')">
+								</div>
+							</a>
+						</div>
+					</div> <!-- comment -->
+
+					<div class="row post comment">
+						<div class="col-md-2 col-md-offset-2">
+							<a href="profile.html" class="thumbnail">
+								<div class="ratio" style="background-image:url('/static/res/profile-pic.jpg')">
+								</div>
+							</a>
+						</div>
+						<div class="col-md-6 post-content">
+							<div> 
+								<a href="profile.html"> Carmela </a> 
+								<span> I had something very interesting to say here </span>
+							</div>
+							<div class="post-bottom">
+								Aug 31, 2013
+							</div>
+						</div>
+					</div> <!-- comment -->
+				</div> <!-- middle column -->
+								<div class="col-lg-2 friends">
+					<h4>Following</h4>
+					<div class="row">
+						<div class="col-sm-6 col-md-3">
+							<a href="profile.html" class="thumbnail">				 				
+								<div class="ratio" style="background-image:url('/static/res/profile-pic.jpg')">
+								</div>
+							</a>
+						</div>
+						<div class="col-sm-6 col-md-3">
+							<a href="other-profile.html" class="thumbnail">
+								<div class="ratio" style="background-image:url('https://graph.facebook.com/818427800/picture?type=square')">
+								</div>
+							</a>
+						</div>
+					</div> <!-- following -->
+				</div> <!-- right column -->
+			</div> <!-- row -->
+		</div> <!-- container -->
+		<script src="/static/jquery/jquery-2.0.3.min.js"></script>
+		<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+		<script src="/static/bootstrap/js/bootstrap.file-input.js"></script>
+		<script>$(document).ready(function(){$('input[type=file]').bootstrapFileInput();});</script>
+	</body>
+</html>

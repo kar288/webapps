@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>{% block title %}Grumblr{% endblock %}</title>
+		<!-- Bootstrap core CSS -->
+		<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/static/css/grumblr.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/stream.html">Grumblr</a>
+				</div>
+				<div class="navbar-collapse collapse" style="height: 1px;">
+					<ul class="nav navbar-nav navbar-left">
+						<li >
+							<a href="/profile.html">Profile</a>
+						</li>
+						<li >
+							<a href="/stream.html">Stream</a>
+						</li>
+					</ul><!--navbar-left -->
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<form action="/search.html" method="get" class="navbar-form">
+								<div class="form-group">
+									<input type="text" placeholder="Search" class="form-control" name="term">
+								</div>
+								<button type="submit" class="btn btn-success search">Search</button>
+							</form>
+						</li>
+						<li class="navbar-thumbnail">
+							<a href="/profile.html" class="thumbnail">
+								<img class="ratio" style="background-image:url({{pic}})">
+							</a>
+						</li>
+						<li>
+							<a href="/logout.html">Logout</a>
+						</li>
+					</ul><!--navbar right -->
+				</div>
+			</div><!-- /.container -->
+		</div><!-- /.navbar -->
+		<div class="container stream">
+			<div class="row">
+				<div class="col-lg-3 user-info">
+					{% block left-content %}{% endblock %}
+				</div> <!-- left column -->
+				<div class="col-lg-7 posts">
+					{% block middle-content %}{% endblock %}
+				</div> <!-- middle column -->
+				<div class="col-lg-2 friends">
+					{% include "follow.html" %}
+				</div> <!-- right column -->
+			</div> <!-- row -->
+		</div> <!-- container -->
+		<script src="/static/jquery/jquery-2.0.3.min.js"></script>
+		<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+		<script src="/static/bootstrap/js/bootstrap.file-input.js"></script>
+		<script src="/static/js/grumblr.js"></script>
+		<script>$(document).ready(function(){$('input[type=file]').bootstrapFileInput();});</script>
+	</body>
+</html>

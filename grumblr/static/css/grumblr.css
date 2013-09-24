@@ -1,0 +1,230 @@
+body {
+  padding-top: 50px;
+}
+
+.navbar-header {
+	padding-left: 16px;
+	padding-right: 16px;
+}
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  padding-top: 100px;
+  margin: 0 auto;
+}
+
+.form-signin .btn-lg {
+	height: 34px;
+	padding: 5px 16px;
+	font-size: 16px;
+}
+
+.info-container {
+  max-width: 330px;
+  padding: 15px;
+  padding-top: 100px;
+  margin: 0 auto;
+}
+
+.info-name {
+	display: block;
+	width: 100px;
+}
+.new-post {
+  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin: 0 auto;
+}
+
+.new-post .file-input-wrapper {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+}
+
+.stream {
+	max-width: 1000px;
+}
+
+.stream .thumbnail {
+	padding: 0px;
+}
+
+.friends .row {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.friends .col-sm-6 {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+.user-info {
+	font-size: 12px;
+}
+
+.user-info > input {
+	font-size: 12px;
+}
+
+.user-info .thumbnail {
+	max-width: 220px
+}
+
+.user-info .user-name {
+	border: none;
+	font-size: 20px;
+}
+
+.user-info .user-data {
+	border: none;
+}
+
+.user-info .form-control {
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.user-info .password {
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.ratio{
+    position:relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 100% ; 
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+
+}
+
+.post {
+	position: relative;
+	padding-top: 16px;
+	padding-bottom: 16px;
+}
+
+.post .post-content {
+	height: 64px;
+}
+
+.post .post-bottom {
+	position: absolute;
+	bottom: 0;
+	font-size: 12px;
+	padding: 2px;
+}
+
+.comment {
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+.answer .file-input-wrapper {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	border-top-width: 0px;
+	border-bottom-width: 0px;
+}
+
+.answer {
+	padding-right: 15px;
+	padding-left: 15px; 
+}
+
+.posts {
+	padding: 32px;
+	background-color: rgb(236, 236, 236);
+}
+
+.navbar-thumbnail {
+	padding-top: 9px;
+	padding-bottom: 9px;
+	height: 32px;
+	width: 32px;
+}
+
+.navbar-thumbnail .thumbnail{
+	padding: 0;
+	border: 0;
+}
+
+.navbar-thumbnail .ratio {
+	width: 32px;
+}
+
+.follow {
+	background-color: rgb(83, 169, 63);
+	border: 0;
+}
+
+.unfollow:hover {
+	background-color: rgb(83, 169, 63);
+}
+
+.edit-username {
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
+.edit-info {
+	margin-top: 1px;
+	margin-bottom: 1px;
+}
+
+.edit-info .input-group{
+	width: 100%;
+}
+
+.errors {
+	color: rgb(240, 80, 80);
+	margin: 0 auto;
+	max-width: 330px;
+	padding: 15px;
+}
+
+.success {
+	color: rgb(83, 169, 63);
+	margin: 0 auto;
+	max-width: 330px;
+	padding: 15px;
+}
+
+
+.wrong {
+	border: 1px solid rgb(240, 80, 80);
+}
+
+.wrong:focus {
+	border: 1px solid rgb(240, 80, 80);
+}
+
+.popover > h3 {
+	display: none;
+}
+
+.popover {
+	width: 100%;
+}
+
+.form-signin > .popover {
+	min-height: 32px;
+	padding: 0px;
+}
+
+.form-signin > .popover > .popover-content {
+	min-height: 32px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+.form-signin > .form-control {
+	margin-top: 1px;
+	margin-bottom: 1px;
+}
