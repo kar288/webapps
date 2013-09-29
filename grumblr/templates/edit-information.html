@@ -1,25 +1,23 @@
 {% extends "base-in.html" %}
 {% block left-content %}
 	<form method="POST" action="edit-information.html" class="edit-username">
-		<div class="input-group">
-			<input name="username" type="text" class="form-control user-name" value="{{user}}" data-toggle="popover" data-placement="right" data-content= "Click here to edit me!">
-		</div>
+		{%for field in editUsername_form%}
+			{{field}}
+		{% endfor %}
 		{% csrf_token %}
 	</form>
+	<a href="#" class="thumbnail">
+	<img src="{{user.pic.docfile.url}}" data-src="holder.js/100%x180" alt="...">
+	</a>
+	<form class="image-upload" action="edit-information.html" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.docfile }}
+    </form>		
 
-	<form method="POST" action="edit-information.html" class="edit-info">
-		<div class="input-group">
-			<a href="#" class="thumbnail">
-				<img src="{{pic}}" data-src="holder.js/100%x180" alt="...">
-				<input name="pic" type="file" title="Edit">
-			</a>
-		</div>
-		{% csrf_token %}
-	</form>				
-	<form method="POST" action="edit-information.html" class="edit-info">
-		<div class="input-group">			
-			<input name="email" type="text" class="form-control user-data" value="{{user.email}}">
-		</div>
+	<form  method="POST" action="edit-information.html" class="edit-info">
+		{%for field in editEmail_form%}
+			{{field}}
+		{% endfor %}
 		{% csrf_token %}
 	</form>	
 {% endblock %}
@@ -35,15 +33,15 @@
 	</div>
 	{% endif %}
 
-	<form method="POST" action="edit-information.html"class="form-signin">
-		{% for key, value in values.items %}
-			{{key}}
-			<input name="{{key}}" type="text" class="form-control" placeholder="{{key}}" {% if value %} value="{{value}}" {% endif%} >
+	<form method="POST" action="{% url 'edit_information'%}"class="form-signin">
+		{% for field in profile_form %}
+			{{ field.label_tag }}
+		    {{ field }}
 		{% endfor %}
 		{% csrf_token %}
 		<button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
 		<div>
-			<a href="/edit-password.html"> Change Password </a>
+			<a href="{% url 'edit_password'%}"> Change Password </a>
 		</div>
 	</form>
 {% endblock %}

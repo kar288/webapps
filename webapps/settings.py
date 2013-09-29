@@ -74,7 +74,7 @@ STATIC_URL = '/static/'
 
 #The URL where requests are redirected after login when the contrib.auth.login view gets no next parameter.
 #This is used by the login_required() decorator, for example.
-LOGIN_REDIRECT_URL ='/profile.html/'
+LOGIN_REDIRECT_URL ='/profile'
 
 #The URL where requests are redirected for login, especially when using the login_required() decorator.
 LOGIN_URL = '/sign-in.html/'

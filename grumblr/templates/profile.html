@@ -1,78 +1,77 @@
 {% extends "base-in.html" %}
 {% block left-content %}
 	<div class="input-group">
-		<h4> <a href="/profile.html/{{user}}/information"> {% if user %} {{ user }} {% else %} User {% endif %}</a></h4>
-		<a href="/profile.html" class="thumbnail">
-			<img src="{{pic}}" data-src="holder.js/100%x180" alt="...">
+		{% if not info %}
+			<h4> <a href="{% url 'profile' %}/{{user}}/information"> {% if user %} {{ user }} {% else %} User {% endif %}</a></h4>
+		{% else %}
+			<h4> <a href="{% url 'profile' %}/{{user}}"> {% if user %} {{ user }} {% else %} User {% endif %}</a></h4>
+		{% endif %}
+		<a href="{% url 'profile' %}" class="thumbnail">
+			<img src="{{user.pic.docfile.url}}" data-src="holder.js/100%x180" alt="...">
 		</a>
 	</div> <!-- user info -->
 	{% if own %}
 	<div class="edit-info">
-		<a href="/edit-information.html"> Edit information </a>
+		<a href="{% url 'edit_information'%}"> Edit information </a>
 	</div>
 	{% else %}
-		{% if following%}
-			<a class="unfollow btn btn-sm btn-primary btn-block" type="submit" href="#">Unfollow </a>
+		<form action="{{url}}" method="POST">
+			{% if following%}
+				<button name="unfollow" value="unfollow" class="unfollow btn btn-sm btn-primary btn-block" type="submit">Unfollow</button>
+			{% else %}
+				<button name="follow" value="follow" class="follow btn btn-sm btn-primary btn-block" type="submit">Follow</button>
+			{% endif%}
+			{% csrf_token %}
+		</form>
+		{% if info %}
+			<form method="POST" action="{{url}}">
+				{% if blocked%}
+					<button name="unblock" value="unblock" class="unblock btn btn-sm btn-primary btn-block" type="submit">Unblock</button>
+				{% else %}
+					<button name="block" value="block" class="block btn btn-sm btn-primary btn-block" type="submit">Block</button>
+				{% endif%}
+				{% csrf_token %}
+			</form>
 		{% else %}
-			<a class="follow btn btn-sm btn-primary btn-block" type="submit" href="#">Follow </a>
-		{% endif%}
-
-		<div class="edit-info">
-			<a href="/profile.html/{{user}}/information"> More information </a>
-		</div>
+			<div class="edit-info">
+				<a href="{% url 'profile' %}/{{user}}/information"> More information </a>
+			</div>
+		{% endif %}
 	{% endif %}
 {% endblock %}
 {% block middle-content %}
-	{%if info %}
-		<h4>
-			{% if own %} Your information {% else %} Information {% endif %} 
-		</h4>
-		<div class="info-container">
-		<div class="row">
-			<div class="col-sm-3"> E-mail: </div>
-			<div class="col-sm-3"> {{profile.user.email}} </div>
-		</div>
-		{% for key, value in values.items %}
-			{% if value %}
-			<div class="row">
-				<div class="col-sm-3"> {{key}}: </div>
-				<div class="col-sm-3"> {{value}} </div>
-			</div>
-			{% endif %}
-		{% endfor %}
-		</div>
-	{% else %}
-		<h4>{% if own %} Your grumbls {% else %} Grumbls {% endif %}</h4>
-		{% if own %}
-		<form method="POST" action="/profile.html" class="new-post">
-			<h5> Post </h5>
-			<div class="input-group">
-				<input name="content" type="text" class="form-control" placeholder="Go ahead and grumble">
-				<span class="input-group-addon">
-					<input type="file" title="pic">
-					<span class="glyphicon glyphicon-camera">
-					</span>
-				</span>
-			</div>
-			{% csrf_token %}
-		</form>
-		{% endif %}
-		{% for grumble in grumbls %}
-		<div class="row post">
-			<div class="col-md-2">
-				<a href="#" class="thumbnail">
-					<div class="ratio" style="background-image:url('{{pic}}')">
-					</div>
-				</a>
-			</div>
-			<div class="col-md-10 post-content">
-				<div> <a href="/profile.html/{{grumble.user}}"> {{grumble.user}} </a> </div>
-				<h5> {{grumble.content}} </h5>
-				<div class="post-bottom">
-					{{grumble.time}} - <a> Comment </a>
+		{%if info %}
+			<h4>
+				{% if own %} Your information {% else %} Information {% endif %} 
+			</h4>
+			<div class="info-container">
+				<div class="row">
+					<div class="col-sm-3"> E-mail: </div>
+					<div class="col-sm-9"> {{profile.user.email}} </div>
+				{% for key, value in values.items %}
+					{% if value %}
+						<div class="col-sm-3"> {{key}}: </div>
+						<div class="col-sm-9"> {{value}} </div>
+					{% endif %}
+				{% endfor %}
 				</div>
 			</div>
-		</div>
-		{% endfor %}
-	{% endif %}
+		{% else %}
+			<h4>{% if own %} Your grumbls {% else %} Grumbls {% endif %}</h4>
+			{% if own %}
+			<form method="POST" action="{% url 'profile' %}" class="new-post">
+				<h5> Post </h5>
+				<div class="input-group">
+					<input name="content" type="text" class="form-control" placeholder="Go ahead and grumble">
+					<span class="input-group-addon">
+						<input type="file" title="pic">
+						<span class="glyphicon glyphicon-camera">
+						</span>
+					</span>
+				</div>
+				{% csrf_token %}
+			</form>
+			{% endif %}
+			{% include "grumbls.html" %}
+		{% endif %}
 {% endblock %}

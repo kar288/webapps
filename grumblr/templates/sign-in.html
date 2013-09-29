@@ -3,16 +3,15 @@
 {% block title %}Grumblr{% endblock %}
 
 {% block content %}
-	{% if errors %}
+
+	{% if form.errors %}
 		<div class="errors">
-			{% for error in errors.values %}
-			<p>
+			{% for error in form.errors.values %}
 				{{error}}
-			</p>
 			{% endfor %}
 		</div>
 	{% endif %}
-	<form class="form-signin" action="sign-in.html" method="POST">
+	<form class="form-signin" action="{% url 'login'%}" method="POST">
 		<h2> Sign in </h2>
 		<input name="username" type="text" class="form-control" placeholder="Username" autofocus>
 		<input name="password" type="password" class="form-control" placeholder="Password">
@@ -21,10 +20,10 @@
 		<input type="hidden" name="next" value="{{next}}" />
 		<div>
 			<div>
-				<a href="/recover-password.html"> Forgot your password? </a>
+				<a href="{% url 'recover-password'%}"> Forgot your password? </a>
 			</div>
 			<div>
-				<a href="/registration.html"> New to Grumblr? Register now! </a>
+				<a href="{% url 'registration'%}"> New to Grumblr? Register now! </a>
 			</div>
 		</div>
 	</form>

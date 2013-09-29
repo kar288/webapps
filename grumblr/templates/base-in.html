@@ -16,20 +16,20 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="/stream.html">Grumblr</a>
+					<a class="navbar-brand" href="{% url 'stream' %}">Grumblr</a>
 				</div>
 				<div class="navbar-collapse collapse" style="height: 1px;">
 					<ul class="nav navbar-nav navbar-left">
 						<li >
-							<a href="/profile.html">Profile</a>
+							<a href="{% url 'profile' %}">Profile</a>
 						</li>
 						<li >
-							<a href="/stream.html">Stream</a>
+							<a href="{% url 'stream' %}">Stream</a>
 						</li>
 					</ul><!--navbar-left -->
 					<ul class="nav navbar-nav navbar-right">
 						<li>
-							<form action="/search.html" method="get" class="navbar-form">
+							<form action="{% url 'search' %}" method="get" class="navbar-form">
 								<div class="form-group">
 									<input type="text" placeholder="Search" class="form-control" name="term">
 								</div>
@@ -37,12 +37,12 @@
 							</form>
 						</li>
 						<li class="navbar-thumbnail">
-							<a href="/profile.html" class="thumbnail">
-								<img class="ratio" style="background-image:url({{pic}})">
+							<a href="{% url 'profile' %}" class="thumbnail">
+								<img class="ratio" style="background-image:url({{current_user.pic.docfile.url}})">
 							</a>
 						</li>
 						<li>
-							<a href="/logout.html">Logout</a>
+							<a href="{% url 'logout' %}">Logout</a>
 						</li>
 					</ul><!--navbar right -->
 				</div>
@@ -50,6 +50,9 @@
 		</div><!-- /.navbar -->
 		<div class="container stream">
 			<div class="row">
+				{% if block %}
+				<div class="col-lg-12 error">Content not available</div>
+				{% else %}
 				<div class="col-lg-3 user-info">
 					{% block left-content %}{% endblock %}
 				</div> <!-- left column -->
@@ -59,6 +62,7 @@
 				<div class="col-lg-2 friends">
 					{% include "follow.html" %}
 				</div> <!-- right column -->
+				{% endif %}
 			</div> <!-- row -->
 		</div> <!-- container -->
 		<script src="/static/jquery/jquery-2.0.3.min.js"></script>

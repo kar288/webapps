@@ -1,29 +1,13 @@
 {% extends "base-in.html" %}
 {% block left-content %}
 	<div class="input-group">
-		<h4> <a href="/profile.html/{{user}}/information"> {% if user %} {{ user }} {% else %} User {% endif %}</a></h4>
-		<a href="/profile.html/{{user}}" class="thumbnail">
-			<img src="/static/res/profile-pic.jpg" data-src="holder.js/100%x180" alt="...">
+		<h4> <a href="{%url 'profile'%}/{{user}}/information"> {% if user %} {{ user }} {% else %} User {% endif %}</a></h4>
+		<a href="{%url 'profile'%}/{{user}}" class="thumbnail">
+			<img src="{{user.pic.docfile.url}}" data-src="holder.js/100%x180" alt="...">
 		</a>
 	</div> <!-- user info -->
 {% endblock %}
 {% block middle-content %}
 	<h4>All grumbls</h4>
-	{% for grumble in grumbls %}
-	<div class="row post">
-		<div class="col-md-2">
-			<a href="/profile.html/{{grumble.user}}" class="thumbnail">
-				<div class="ratio" style="background-image:url('{{STATIC_URL}}{{grumble.user.pic.url}}')">
-				</div>
-			</a>
-		</div>
-		<div class="col-md-10 post-content">
-			<div> <a href="/profile.html/{{grumble.user}}"> {{grumble.user.username}} </a> </div>
-			<h5> {{grumble.content}} </h5>
-			<div class="post-bottom">
-				{{grumble.time}} - <a> Comment </a>
-			</div>
-		</div>
-	</div>
-	{% endfor %}
+	{% include "grumbls.html" %}
 {% endblock %}

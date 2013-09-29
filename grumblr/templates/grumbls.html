@@ -1,0 +1,67 @@
+{% for grumble in grumbls %}
+{% if not grumble.commentType %}
+<div id="{{grumble.id}}" class="row post">
+	<div class="col-md-2">
+		<a href="{%url 'profile'%}/{{grumble.user}}" class="thumbnail">
+			<div class="ratio" style="background-image:url('{{grumble.user.pic.docfile.url}}')">
+			</div>
+		</a>
+	</div>
+	<div class="col-md-10 post-content">
+		<div> <a href="{%url 'profile'%}/{{grumble.user}}"> {{grumble.user.username}} </a> </div>
+		<h5> {{grumble.content}} </h5>
+		<div class="post-bottom">
+			{{grumble.time}} - <a id="comment-button-{{grumble.id}}" class="toggle comment-button"> Comment </a> -  
+			<a href="dislike/?next={{url}}&grumble={{grumble.id}}" class="toggle" > Dislike </a>
+			{% if grumble.dislikes.all %}
+				{{grumble.dislikes.all|length}}
+				{% for dislike in grumble.dislikes.all %}
+					{{dislike.username}}
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+</div>
+	<div id="comment-{{grumble.id}}" class="row answer hidden" >
+		<div class="col-md-10 col-md-offset-2">
+			<form method="POST" action="#" class="new-post">
+				<div class="input-group">
+					<input name="comment" type="text" class="form-control" placeholder="Comment">
+					<span class="input-group-addon">
+						<input type="file" title="pic">
+						<span class="glyphicon glyphicon-camera">
+						</span>
+					</span>
+					<input type="hidden" name="id" value="{{grumble.id}}" />
+				</div>
+				{% csrf_token %}
+			</form>
+		</div>
+	</div>	
+	{% for comment in grumble.comments.all %}
+	<div class="row post comment">
+		<div class="col-md-2 col-md-offset-2">
+			<a href="{%url 'profile'%}/{{comment.user}}" class="thumbnail">
+				<div class="ratio" style="background-image:url('{{comment.user.pic.docfile.url}}')">
+				</div>
+			</a>
+		</div>
+		<div class="col-md-6 post-content">
+			<div> 
+				<a href="{%url 'profile'%}/{{comment.user}}"> {{comment.user.username}} </a> 
+				<span> {{comment.content}}</span>
+			</div>
+			<div class="post-bottom">
+				{{comment.time}}
+			</div>
+		</div>
+		<!--<div class="col-md-2">
+			<a href="other-profile.html" class="thumbnail">
+				<div class="ratio" style="background-image:url('https://sphotos-b.xx.fbcdn.net/hphotos-frc3/971678_10152993635555307_1478960730_n.jpg')">
+				</div>
+			</a>
+		</div>-->
+	</div> <!-- comment -->
+	{% endfor %}
+{% endif %}
+{% endfor %}

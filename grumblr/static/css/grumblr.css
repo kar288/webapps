@@ -83,7 +83,7 @@ body {
 	border: none;
 }
 
-.user-info .form-control {
+.user-info > input {
 	padding-left: 2px;
 	padding-right: 2px;
 }
@@ -136,6 +136,10 @@ body {
 .answer {
 	padding-right: 15px;
 	padding-left: 15px; 
+}
+
+.answer > div {
+	padding: 0px
 }
 
 .posts {
@@ -224,7 +228,46 @@ body {
 	padding-bottom: 6px;
 }
 
-.form-signin > .form-control {
+.form-signin .form-control {
 	margin-top: 1px;
 	margin-bottom: 1px;
+}
+
+.image-submit {
+	display: none;
+}
+
+.hidden {
+	display: none;
+}
+
+.shown {
+	display: block
+}
+
+.toggle:hover {
+	text-decoration: none; cursor: pointer; 
+}
+
+div.block {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+button.unblock {
+	background-color: rgb(240, 80, 80);
+	border: 0px;
+}
+button.unblock:hover {
+	background-color: rgb(83, 169, 63);
+	border: 0px;
+}
+
+button.block:hover {
+	background-color: rgb(240, 80, 80);
+}
+button.block {
+	border: 0px;
+	color: rgb(0, 0, 0);
+	background-color: rgb(255, 255, 255);
 }
