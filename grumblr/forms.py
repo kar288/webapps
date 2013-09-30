@@ -3,8 +3,13 @@ from django import forms
 import grumblr.form_widget
 from grumblr.models import *
 
-class DocumentForm(forms.Form):
-    docfile = forms.FileField(widget = forms.FileInput(attrs={'title': 'Edit'}))
+class DocumentForm(forms.ModelForm):
+	class Meta:
+		model = GrumblrUser
+		fields = ('picture', )
+		widgets = {
+			'picture': forms.FileInput(attrs={'title': 'Edit'}),
+		}
 
 class RegistrationForm(forms.Form):
 	email = forms.CharField(max_length = 200, 
@@ -86,11 +91,15 @@ class ProfileForm(forms.ModelForm):
 
 
 class EditUsernameForm(forms.ModelForm):
+	
 	class Meta:
 		model = GrumblrUser
 		fields = ('username', )
 		widgets = {
-			'username': forms.TextInput(attrs={'class' : 'form-control user-name', 'placeholder' : 'username', 'value': ''}),
+			'username': forms.TextInput(attrs={'class' : 'form-control user-name',\
+											 'placeholder' : 'username', 'value': '',\
+											 'data-toggle' : 'popover', 'data-placement' : 'right',\
+											 'data-content' : 'Click me to edit me!'}),
 		}
 	
 	# Customizes form validation for the username field.
@@ -99,9 +108,7 @@ class EditUsernameForm(forms.ModelForm):
 		# User model database.
 
 		username = self.cleaned_data.get('username')
-		print "USER: ", username
 		if GrumblrUser.objects.filter(username__exact=username):
-			print "USERNAMET TAKEN"
 			self.fields['username'].widget.error = 'Username is already taken.'
 			self.fields['username'].widget.attrs['class'] += ' wrong'
 			raise forms.ValidationError("Username is already taken.")

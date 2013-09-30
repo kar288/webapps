@@ -7,7 +7,7 @@
 			<h4> <a href="{% url 'profile' %}/{{user}}"> {% if user %} {{ user }} {% else %} User {% endif %}</a></h4>
 		{% endif %}
 		<a href="{% url 'profile' %}" class="thumbnail">
-			<img src="{{user.pic.docfile.url}}" data-src="holder.js/100%x180" alt="...">
+			<img src="{% url 'photo' user.id %}" data-src="holder.js/100%x180" alt="...">
 		</a>
 	</div> <!-- user info -->
 	{% if own %}

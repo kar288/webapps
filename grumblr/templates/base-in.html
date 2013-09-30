@@ -38,7 +38,7 @@
 						</li>
 						<li class="navbar-thumbnail">
 							<a href="{% url 'profile' %}" class="thumbnail">
-								<img class="ratio" style="background-image:url({{current_user.pic.docfile.url}})">
+								<img class="ratio" style="background-image:url({% url 'photo' current_user.id %})">
 							</a>
 						</li>
 						<li>

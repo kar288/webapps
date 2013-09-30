@@ -17,4 +17,10 @@ $(document).ready(function(){
         var id = $(this).context.id.split('-')[2]
         $("#comment-" + id).toggleClass('hidden', 'shown');
     });
+    $('.dislikes').hover(function() {
+        console.log("BLA")
+        $(this).popover('show')
+    }, function() {
+        $(this).popover('hide')
+    })
 });

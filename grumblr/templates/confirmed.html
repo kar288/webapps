@@ -1,0 +1,13 @@
+{% extends "base-out.html" %}
+
+{% block title %}Grumblr{% endblock %}
+
+{% block content %}
+	<div class="info-container">
+	Welcome to Grumblr!<br>
+
+	Registration confirmed.<br>
+
+	Proceed to your <a href={% url 'profile' %}>profile</a>
+	</div>
+{% endblock %}

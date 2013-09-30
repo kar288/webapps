@@ -1,9 +1,10 @@
+{% load grumblr_templatetag %}
 {% for grumble in grumbls %}
 {% if not grumble.commentType %}
 <div id="{{grumble.id}}" class="row post">
 	<div class="col-md-2">
 		<a href="{%url 'profile'%}/{{grumble.user}}" class="thumbnail">
-			<div class="ratio" style="background-image:url('{{grumble.user.pic.docfile.url}}')">
+			<div class="ratio" style="background-image:url('{% url 'photo' grumble.user.id %}')">
 			</div>
 		</a>
 	</div>
@@ -11,13 +12,20 @@
 		<div> <a href="{%url 'profile'%}/{{grumble.user}}"> {{grumble.user.username}} </a> </div>
 		<h5> {{grumble.content}} </h5>
 		<div class="post-bottom">
-			{{grumble.time}} - <a id="comment-button-{{grumble.id}}" class="toggle comment-button"> Comment </a> -  
-			<a href="dislike/?next={{url}}&grumble={{grumble.id}}" class="toggle" > Dislike </a>
+			{{grumble.time}} - <a id="comment-button-{{grumble.id}}" class="toggle comment-button"> Comment </a> - 
+			{% if not current_user in grumble.dislikes.all %}
+			<a href="/dislike/?next={{url}}&grumble={{grumble.id}}" class="toggle" > Dislike </a>
+			{% else %}
+			<a href="/disdislike/?next={{url}}&grumble={{grumble.id}}" class="toggle" > Disdislike </a>
+			{% endif %}
 			{% if grumble.dislikes.all %}
-				{{grumble.dislikes.all|length}}
-				{% for dislike in grumble.dislikes.all %}
+				- 
+				<span class="glyphicon glyphicon-thumbs-down"></span>
+				<span class="dislikes" data-toggle='popover' data-placement = 'right' data-content = "{% for dislike in grumble.dislikes.all %}
 					{{dislike.username}}
-				{% endfor %}
+				{% endfor %}">
+				{{grumble.dislikes.all|length}}
+				</span>
 			{% endif %}
 		</div>
 	</div>
@@ -42,7 +50,7 @@
 	<div class="row post comment">
 		<div class="col-md-2 col-md-offset-2">
 			<a href="{%url 'profile'%}/{{comment.user}}" class="thumbnail">
-				<div class="ratio" style="background-image:url('{{comment.user.pic.docfile.url}}')">
+				<div class="ratio" style="background-image:url('{% url 'photo' comment.user.id %}')">
 				</div>
 			</a>
 		</div>

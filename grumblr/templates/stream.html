@@ -3,7 +3,7 @@
 	<div class="input-group">
 		<h4> <a href="{%url 'profile'%}/{{user}}/information"> {% if user %} {{ user }} {% else %} User {% endif %}</a></h4>
 		<a href="{%url 'profile'%}/{{user}}" class="thumbnail">
-			<img src="{{user.pic.docfile.url}}" data-src="holder.js/100%x180" alt="...">
+			<img src="{% url 'photo' current_user.id %}" data-src="holder.js/100%x180" alt="...">
 		</a>
 	</div> <!-- user info -->
 {% endblock %}

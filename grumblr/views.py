@@ -1,10 +1,8 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect, get_object_or_404
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import login, authenticate
 from django.contrib import auth
-from django.db import transaction
-from django.http import Http404
 
 # Decorator to use built-in authentication system
 from django.contrib.auth.decorators import login_required
@@ -12,14 +10,20 @@ from django.contrib.auth.decorators import login_required
 # Imports the Item class
 from grumblr.models import *
 from grumblr.forms import *
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.validators import *
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from collections import *
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
+
+from mimetypes import guess_type
+
+# Used to send mail from within Django
+from django.core.mail import send_mail
+from django.contrib.auth.tokens import default_token_generator
 
 @transaction.commit_on_success
 def registration(request):
@@ -39,23 +43,54 @@ def registration(request):
 	if not form.is_valid():
 		return render(request, 'registration.html', context)
 
-	pic = Document(docfile = 'profile-pic.jpg')
-	pic.save()
 	# If we get here the form data was valid.  Register and login the user.
 	new_user = GrumblrUser.objects.create_user(username=form.cleaned_data['username'],
 										email = form.cleaned_data['email'],
 										password=form.cleaned_data['password1'],
-										pic = pic)
-	new_user.save()
+										picture = 'profile-pic.jpg')
 
 	new_profile = GrumblrProfile.objects.create(user = new_user)
-	new_profile.save()
+	new_profile.save() # Mark the user as inactive to prevent login before email confirmation.
 
-	# Logs in the new user and redirects to his/her todo list
-	new_user = authenticate(username=form.cleaned_data['username'], \
-							password=form.cleaned_data['password1'])
-	login(request, new_user)
-	return redirect(reverse('profile'))
+	new_user.is_active = False
+	new_user.save()
+
+    # Generate a one-time use token and an email message body
+	token = default_token_generator.make_token(new_user)
+
+	email_body = """
+Welcome to Grumblr!  Please click the link below to
+verify your email address and complete the registration of your account:
+
+  http://%s%s
+""" % (request.get_host(), 
+       reverse('confirm', args=(new_user.username, token)))
+
+	send_mail(subject="Verify your email address",
+              message= email_body,
+              from_email="team@grumblr.com",
+              recipient_list=[new_user.email])
+
+	context['email'] = form.cleaned_data['email']
+	return render(request, 'needs-confirmation.html', context)
+
+def needs_confirmation(request):
+	return render(request)
+    
+
+@transaction.commit_on_success
+def confirm_registration(request, username, token):
+    user = get_object_or_404(User, username=username)
+
+    # Send 404 error if token is invalid
+    if not default_token_generator.check_token(user, token):
+        raise Http404
+
+    # Otherwise token was valid, activate the user.
+    user.is_active = True
+    user.save()
+    return render(request, 'confirmed.html', {})
+    
 
 @transaction.commit_on_success
 @login_required
@@ -100,6 +135,18 @@ def profile(request):
 	print context
 	return render(request, 'profile.html', context)
 
+
+@login_required
+def get_photo(request, id):
+	print "getting photo"
+	user = get_object_or_404(GrumblrUser, id=id)
+	if not user.picture:
+		raise Http404
+
+	print user.id
+	content_type = guess_type(user.picture.name)
+	return HttpResponse(user.picture, mimetype=content_type)
+
 @transaction.commit_on_success
 @login_required
 def dislike(request):
@@ -110,6 +157,20 @@ def dislike(request):
 	if request.GET:
 		grumble = Grumble.objects.filter(id = request.GET['grumble'])[0]
 		grumble.dislikes.add(user)
+		return redirect(request.GET['next'])
+	return render(request, 'profile.html', context)
+
+@transaction.commit_on_success
+@login_required
+def disdislike(request):
+	context = {}
+
+	user = GrumblrUser.objects.filter(username = request.user)[0]
+	getUserInfo(context, user, user)
+	if request.GET:
+		grumble = Grumble.objects.filter(id = request.GET['grumble'])[0]
+		if user in grumble.dislikes.all():
+			grumble.dislikes.remove(user)	
 		return redirect(request.GET['next'])
 	return render(request, 'profile.html', context)
 
@@ -145,74 +206,25 @@ def other_user (request, name):
 	errors = []
 	context = {}
 	context['errors'] = errors;
+	print request
+	if 'information' in request.META['PATH_INFO']:
+		print 'INFORMATION'
+		context['info'] = True
 
+	context['own'] = False
 	current_user = GrumblrUser.objects.filter(username = request.user)[0]
-
 	if current_user.username == name:
 		return redirect(reverse('profile'))
 
-	context['own'] = False
 	users = GrumblrUser.objects.filter(username = name)
 
-	if not users:
-		errors.append('Did not find user.')
-		return render(request, '/profile.html', context)
-
-	user = users[0]
-
-	print GrumblrUser.objects.filter(blockers=current_user)
-	if user in GrumblrUser.objects.filter(blockers=current_user):
+	if not users or users[0] in GrumblrUser.objects.filter(blockers=current_user):
 		raise Http404
 
-	getUserInfo(context, current_user, user)
-	getGrumbls(context, user)
-
-	context['following'] = False
-	if current_user.following.filter(username = name):
-		context['following'] = True
-	context['blocked'] = True
-	if GrumblrUser.objects.filter(blockers__username=current_user.username):
-		context['blocked'] = False
-
-	context['url'] = '/profile/' + name
-
-	if request.POST:
-		if 'follow' in request.POST:
-			current_user.following.add(user)
-		if 'unfollow' in request.POST:
-			current_user.following.remove(user)
-		if 'comment' in request.POST:
-			comment = Grumble(content = request.POST['comment'], user = user, commentType=True)
-			comment.save()
-			Grumble.objects.filter(id = request.POST['id'])[0].comments.add(comment)
-
-
-	return render(request, 'profile.html', context)
-
-@transaction.commit_on_success
-@login_required
-def other_user_info (request, name):
-	errors = []
-	context = {}
-	context['errors'] = errors;
-	context['info'] = True
-
-	context['own'] = False
-	current_user = GrumblrUser.objects.filter(username = request.user)[0]
-	if current_user.username == name:
-		context['own'] = True
-		return redirect(reverse('profile'))
-
-	users = GrumblrUser.objects.filter(username = name)
-
-	if not users:
-		errors.append('Did not find user.')
-		return render(request, reverse('profile'), context)
-
 	user = users[0]
+
 	getUserInfo(context, current_user, user)
 	getGrumbls(context, user)
-
 
 	context['following'] = False
 	if current_user.following.filter(username = name):
@@ -220,7 +232,9 @@ def other_user_info (request, name):
 	context['blocked'] = False
 	if GrumblrUser.objects.filter(blockers__username=current_user.username):
 		context['blocked'] = True
-
+	
+	context['url'] = '/profile/' + name
+	
 	userprofile = GrumblrProfile.objects.filter(user = user)[0]
 	context['profile'] = userprofile
 	context['values'] = {}
@@ -247,8 +261,13 @@ def other_user_info (request, name):
 		if 'unblock' in request.POST:
 			user.blockers.remove(current_user)
 			user.save()
+		if 'comment' in request.POST:
+			comment = Grumble(content = request.POST['comment'], user = current_user, commentType=True)
+			comment.save()
+			Grumble.objects.filter(id = request.POST['id'])[0].comments.add(comment)
 
-	return render(request, '/profile.html', context)
+
+	return render(request, 'profile.html', context)
 
 @transaction.commit_on_success
 @login_required
@@ -264,9 +283,7 @@ def edit_information (request):
 	if request.method == 'POST':
 		form = DocumentForm(request.POST, request.FILES)
 		if form.is_valid():
-			newdoc = Document(docfile = request.FILES['docfile'])
-			newdoc.save()
-			user.pic = newdoc
+			user.picture = request.FILES['picture']
 	else:
 		form = DocumentForm() # A empty, unbound form
 

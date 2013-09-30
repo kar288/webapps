@@ -4,7 +4,7 @@
 	{% for followee in followees %}
 	<div class="col-sm-6 col-md-3">
 		<a href="{%url 'profile'%}/{{followee.username}}" class="thumbnail">
-			<div class="ratio" style="background-image:url('{{followee.pic.docfile.url}}')">
+			<div class="ratio" style="background-image:url('{% url 'photo' followee.id %}')">
 			</div>
 		</a>
 	</div>
@@ -17,7 +17,7 @@
 	{% for follower in followers %}
 	<div class="col-sm-6 col-md-3">
 		<a href="{%url 'profile'%}/{{follower.username}}" class="thumbnail">
-			<div class="ratio" style="background-image:url('{{follower.pic.docfile.url}}')">
+			<div class="ratio" style="background-image:url('{% url 'photo' follower.id %}')">
 			</div>
 		</a>
 	</div>

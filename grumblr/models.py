@@ -2,14 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from collections import *
 
-def upload_to(instance, filename):
-    return '/static/images/%s/%s' % (instance.user.user.username, filename)
-
-class Document(models.Model):
-    docfile = models.ImageField(upload_to='static/%Y/%m/%d')
-
 class GrumblrUser(User):
-	pic = models.ForeignKey(Document, related_name='user_document')
+	picture = models.ImageField(upload_to='user-photos')
 	following = models.ManyToManyField('self', related_name='user_following', symmetrical=False)
 	blockers = models.ManyToManyField('self', related_name='user_blockers', symmetrical=False)
 
